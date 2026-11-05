@@ -1,6 +1,6 @@
 import argparse
 from lib.search_utils import load_movies
-from lib.keyword_search import keyword_search
+from lib.keyword_search import search_command
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Keyword Search CLI")
@@ -15,15 +15,10 @@ def main() -> None:
 
     match args.command:
         case "search":
-            # print the search query here
             print(f"Searching for: {args.query}")
-            result = keyword_search(movies, args.query)
-            for i, res in enumerate(result, 1):
-                if i >= 6:
-                    print(f"...")
-                    break
-                print(f"{i}. {res}")
-                
+            results = search_command(args.query)
+            for i, res in enumerate(results, 1):
+                print(f"{i}. {res['title']}")
         case _:
             parser.print_help()
 
