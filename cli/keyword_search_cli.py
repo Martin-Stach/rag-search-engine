@@ -1,5 +1,5 @@
 import argparse
-from lib.search_utils import load_movies
+
 from lib.keyword_search import search_command
 
 def main() -> None:
@@ -10,8 +10,6 @@ def main() -> None:
     search_parser.add_argument("query", type=str, help="Search query")
 
     args = parser.parse_args()
-
-    movies = load_movies()
 
     match args.command:
         case "search":
