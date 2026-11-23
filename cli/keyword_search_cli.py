@@ -1,6 +1,6 @@
 import argparse
 
-from lib.keyword_search import search_command
+from lib.keyword_search import build_command, search_command
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Keyword Search CLI")
@@ -17,6 +17,10 @@ def main() -> None:
             results = search_command(args.query)
             for i, res in enumerate(results, 1):
                 print(f"{i}. {res['title']}")
+        case "build":
+            print(f"WHAT?")
+            results = build_command()
+            print(f"RESULT: ${results}")
         case _:
             parser.print_help()
 

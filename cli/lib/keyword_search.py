@@ -70,8 +70,6 @@ class InvertedIndex:
                                 f"{movie['title']} {movie['description']}")
             self.docmap[movie["id"]] = movie
 
-        build_command()
-
     def save(self):
         os.makedirs("cache", exist_ok=True)
 
@@ -82,4 +80,4 @@ class InvertedIndex:
             pickle.dump(self.docmap, f)
 
 def build_command():
-    pass
+    
