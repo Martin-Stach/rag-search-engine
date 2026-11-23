@@ -1,4 +1,6 @@
 import string
+import pickle
+import os
 
 from .search_utils import DEFAULT_SEARCH_LIMIT, STOPWORDS_FILE_PATH, Movie, load_movies
 
@@ -45,3 +47,39 @@ def tokenize_text(text: str) -> list[str]:
         if word not in STOPWORDS:
             filtered_words.append(word)
     return filtered_words
+
+class InvertedIndex:
+    def __init__(self) -> None:
+        self.index: dict[str, set[int]] = {}
+        self.docmap: dict[int, Movie] = {}
+
+    def __add_document(self,  doc_id: int, text) -> None:
+        tokens = tokenize_text(text)
+        for token in tokens:
+            if token not in self.index:
+                self.index[token] = set()
+            self.index[token].add(doc_id)
+
+    def get_documents(self, term) -> list[int]:
+        return sorted(self.index.get(term, set()))
+
+    def build(self):
+        movies: list[Movie] = load_movies()
+        for movie in movies:
+            self.__add_document(movie["id"], 
+                                f"{movie['title']} {movie['description']}")
+            self.docmap[movie["id"]] = movie
+
+        build_command()
+
+    def save(self):
+        os.makedirs("cache", exist_ok=True)
+
+        with open("cache/index.pkl", "wb") as f:
+            pickle.dump(self.index, f)
+
+        with open("cache/docmap.pkl", "wb") as f:
+            pickle.dump(self.docmap, f)
+
+def build_command():
+    pass
